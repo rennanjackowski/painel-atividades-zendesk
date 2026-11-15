@@ -35,7 +35,7 @@ JavaScript puro (sem bibliotecas), API REST do Zendesk (somente leitura), File S
 ## Limitações
 
 - Funciona apenas no Chrome ou Edge, por causa da File System Access API.
-- O módulo que grava no arquivo `.xlsx` (`xlsx_cirurgico.js`) ainda não está neste repositório; sem ele o favorito não é montado.
+- O módulo que grava no arquivo `.xlsx` (`xlsx_cirurgico.js`) não faz parte desta versão pública. O repositório serve para mostrar como a ferramenta foi construída, não para uso direto.
 - A busca do Zendesk leva alguns minutos para enxergar uma atualização recém-enviada.
 - Foi feito para o formato de planilha que eu uso; outro formato pode exigir ajustes.
 
