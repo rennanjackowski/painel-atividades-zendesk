@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='5' fill='%230a1120'/><rect x='6' y='5' width='12' height='14' rx='2' fill='none' stroke='%2300e5ff' stroke-width='1.5'/><circle cx='18' cy='6' r='2.4' fill='%2300ffa2'/></svg>">
+<title>Automacao de Atividades v2 — Instalacao</title>
+<style>
+  :root {
+    --fundo: #f6f7f9; --papel: #ffffff; --texto: #1a1d21; --suave: #5b636d;
+    --borda: #dfe3e8; --acento: #1f6feb; --ok: #1a7f37; --erro: #b3261e; --alerta: #9a6700;
+    --codigo: #f0f2f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fundo: #0d1117; --papel: #161b22; --texto: #e6edf3; --suave: #8b949e;
+      --borda: #2a3038; --acento: #58a6ff; --ok: #3fb950; --erro: #ff7b72; --alerta: #d29922;
+      --codigo: #0d1117;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fundo); color: var(--texto);
+    font: 15px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 32px 16px;
+  }
+  .caixa { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -.02em; }
+  h2 { font-size: 17px; margin: 0 0 12px; letter-spacing: -.01em; }
+  .sub { color: var(--suave); margin: 0 0 28px; }
+  section {
+    background: var(--papel); border: 1px solid var(--borda); border-radius: 12px;
+    padding: 20px; margin-bottom: 18px;
+  }
+  .passo { display: inline-block; width: 24px; height: 24px; line-height: 24px;
+    text-align: center; border-radius: 50%; background: var(--acento); color: #fff;
+    font-size: 13px; font-weight: 700; margin-right: 8px; }
+  code, kbd { background: var(--codigo); border: 1px solid var(--borda); border-radius: 4px;
+    padding: 1px 5px; font: 13px ui-monospace, Consolas, monospace; }
+  button, input[type=file] { font: inherit; }
+  button {
+    background: var(--acento); color: #fff; border: 0; border-radius: 7px;
+    padding: 9px 15px; cursor: pointer; font-size: 14px;
+  }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .bm {
+    display: inline-block; background: var(--codigo); border: 2px dashed var(--acento);
+    color: var(--acento); padding: 11px 18px; border-radius: 8px; text-decoration: none;
+    font-weight: 600; cursor: grab;
+  }
+  .bm.off { opacity: .4; pointer-events: none; border-style: solid; }
+  ol { padding-left: 20px; } li { margin: 7px 0; }
+  .nota { border-left: 3px solid var(--alerta); padding: 2px 0 2px 13px; color: var(--suave);
+    margin: 14px 0; font-size: 14px; }
+  #saida { font: 12.5px/1.55 ui-monospace, Consolas, monospace; white-space: pre-wrap;
+    background: var(--codigo); border: 1px solid var(--borda); border-radius: 8px;
+    padding: 14px; margin-top: 14px; max-height: 460px; overflow: auto; }
+  .ok { color: var(--ok); } .ruim { color: var(--erro); } .aviso { color: var(--alerta); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 10px; }
+  th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--borda); }
+  th { color: var(--suave); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="caixa">
+
+  <h1>Automação de Atividades <span style="color:var(--suave);font-weight:400">v2</span></h1>
+  <p class="sub">Instalação sem instalar nada: um favorito no Chrome. Uma linha por demanda, uma aba armada cobre todas.</p>
+
+  <section>
+    <h2><span class="passo">1</span>Carregar os arquivos</h2>
+    <p>Clique abaixo e selecione os <strong>3 arquivos <code>.js</code></strong> desta pasta
+       (<code>xlsx_cirurgico.js</code>, <code>pdf_relatorio.js</code>,
+       <code>atividades_zendesk.js</code>).
+       Use <kbd>Ctrl</kbd>+<kbd>A</kbd> na janela de seleção.</p>
+    <input type="file" id="arquivos" multiple accept=".js">
+    <div id="statusArquivos" class="sub" style="margin:10px 0 0"></div>
+
+    <div class="links">
+      <a class="bm off" id="bmZendesk" href="#">📋 Painel V2</a>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="passo">2</span>Instalar o favorito</h2>
+    <ol>
+      <li>Mostre a barra de favoritos: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd>.</li>
+      <li><strong>Arraste</strong> o botão tracejado acima para a barra de favoritos.</li>
+      <li>Pronto. Nada foi instalado — é apenas um favorito. O favorito antigo pode continuar na barra; só não clique nos dois na mesma aba.</li>
+    </ol>
+    <div class="nota">
+      <strong>Sobre o ícone:</strong> o Chrome não permite imagem própria em favorito deste
+      tipo — ele sempre mostra o globo cinza. O ícone que aparece na barra é o emoji do
+      próprio nome (📋). Para trocar, clique com o botão direito no favorito →
+      <em>Editar</em> e cole outro emoji no começo do nome: 🚀 🛸 📡 ⚡ 🧭.
+    </div>
+    <div class="nota">
+      Se arrastar não funcionar: clique com o botão direito na barra → <em>Adicionar página</em>,
+      dê um nome e cole o endereço obtido no botão <em>Copiar endereço</em> que aparece
+      ao lado do link depois do passo 1.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="passo">3</span>Conferir a sua planilha <span style="font-weight:400;color:var(--suave);font-size:14px">— faça isto antes de usar</span></h2>
+    <p>Escolha o seu arquivo <code>.xlsx</code>. O teste roda inteiramente <strong>na memória do
+       navegador</strong>: lê a estrutura, simula a gravação de uma linha, gera o arquivo,
+       reabre e confere. <strong>O arquivo em disco não é tocado.</strong></p>
+    <p>É aqui que se descobre se as 5 colunas da sua planilha foram identificadas
+       corretamente. Se alguma aparecer como <code>NAO IDENTIFICADA</code>, pare e mostre
+       esta tela — a automação não grava nada enquanto isso não estiver resolvido.</p>
+    <input type="file" id="planilha" accept=".xlsx" disabled>
+    <div id="resumo"></div>
+    <div id="saida">Carregue os arquivos .js no passo 1 para habilitar o diagnóstico.</div>
+    <div id="baixar"></div>
+  </section>
+
+  <section>
+    <h2><span class="passo">4</span>Preparar a pasta</h2>
+    <p>A automação precisa de uma pasta para gravar. Ela vai criar ali
+       <code>backups/</code> e <code>arquivos_semanais/</code>, ao lado da planilha.</p>
+    <p><strong>Recomendado:</strong> crie uma pasta só para isso — por exemplo
+       <code>Documentos\Atividades</code> — e <strong>mova a planilha para dentro dela</strong>.
+       Assim o Chrome recebe permissão apenas nessa pasta, e os backups não ficam soltos
+       no meio dos seus documentos.</p>
+    <div class="nota">
+      Dá para apontar direto para <code>Documentos</code>, mas o Chrome mostra um aviso mais
+      sério (a permissão passa a valer para tudo que está lá dentro) e os arquivos gerados
+      se misturam aos seus.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="passo">5</span>Usar no dia a dia</h2>
+    <ol>
+      <li>Abra o Zendesk e clique uma vez no favorito <strong>📋 Painel V2</strong>, em
+          <strong>uma aba só</strong>. Um painel escuro aparece no canto inferior direito.</li>
+      <li>Clique em <strong>Conectar planilha</strong> e escolha a pasta do passo 4.
+          O Chrome vai pedir confirmação para <em>ver</em> e para <em>editar</em> os arquivos
+          dessa pasta — autorize as duas.</li>
+      <li>Confira no painel: deve aparecer <code>planilha ..... conectada</code>.</li>
+      <li>Confira também: <code>alcance ...... todas as abas (busca do Zendesk)</code>.</li>
+      <li>Trabalhe normalmente, em quantas abas quiser. A cada 2 minutos a aba armada
+          verifica o que você atualizou <strong>em qualquer aba</strong> e grava.</li>
+    </ol>
+    <div class="nota">
+      <strong>Não é preciso clicar no favorito em cada aba.</strong> Deixe uma aba do Zendesk
+      fixada (botão direito na aba → <em>Fixar</em>) com o painel armado e abra os tickets
+      nas outras à vontade. Tratativa enviada em outra aba aparece na planilha em alguns
+      minutos (é o tempo de a busca do Zendesk enxergar a atualização).
+    </div>
+    <p class="sub" style="margin-bottom:0">
+      Se você recarregar a página (F5), clique no favorito de novo. Nada se perde nesse meio
+      tempo: as atualizações ficam registradas no próprio Zendesk e são recuperadas depois.
+    </p>
+  </section>
+
+</div>
+
+<script type="text/plain" id="modelo"></script>
+<script>
+(function () {
+  'use strict';
+
+  var fontes = {};
+  var XLSXmod = null;
+
+  var elArquivos = document.getElementById('arquivos');
+  var elStatus = document.getElementById('statusArquivos');
+  var elPlanilha = document.getElementById('planilha');
+  var elSaida = document.getElementById('saida');
+  var bmZ = document.getElementById('bmZendesk');
+
+  function esperados() {
+    return ['xlsx_cirurgico', 'pdf_relatorio', 'atividades_zendesk'];
+  }
+
+  /* Remove SOMENTE linhas que sao inteiramente comentario de bloco. Nunca toca
+     em codigo, entao expressoes regulares e textos ficam intactos. */
+  function enxugar(codigo) {
+    var dentro = false;
+    return String(codigo).split('\n').filter(function (linha) {
+      var t = linha.trim();
+      if (dentro) { if (/\*\/$/.test(t)) { dentro = false; } return false; }
+      if (/^\/\*/.test(t)) { if (!/\*\/$/.test(t)) { dentro = true; } return false; }
+      return t !== '';
+    }).map(function (linha) { return linha.replace(/^\s+/, ''); }).join('\n');
+  }
+
+  elArquivos.addEventListener('change', function () {
+    var lista = Array.prototype.slice.call(elArquivos.files || []);
+    var lidos = 0;
+    fontes = {};
+    if (!lista.length) { return; }
+
+    lista.forEach(function (f) {
+      var leitor = new FileReader();
+      leitor.onload = function () {
+        var chave = f.name.replace(/\.js$/i, '');
+        fontes[chave] = String(leitor.result);
+        if (++lidos === lista.length) { montar(); }
+      };
+      leitor.onerror = function () {
+        if (++lidos === lista.length) { montar(); }
+      };
+      leitor.readAsText(f, 'utf-8');
+    });
+  });
+
+  /* Guarda os .js para que um F5 nao obrigue a selecionar tudo de novo. */
+  function guardarFontes() {
+    try { localStorage.setItem('aa2_fontes', JSON.stringify(fontes)); } catch (e) {}
+  }
+
+  function restaurarFontes() {
+    try {
+      var bruto = localStorage.getItem('aa2_fontes');
+      if (!bruto) { return false; }
+      var salvo = JSON.parse(bruto);
+      if (esperados().some(function (n) { return !salvo[n]; })) { return false; }
+      fontes = salvo;
+      montar(true);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function montar(deCache) {
+    var faltam = esperados().filter(function (n) { return !fontes[n]; });
+    if (faltam.length) {
+      elStatus.innerHTML = '<span class="ruim">Faltou selecionar: ' +
+        faltam.map(function (n) { return n + '.js'; }).join(', ') + '</span>';
+      return;
+    }
+
+    var codigoZ = '(function(){' + enxugar(fontes['xlsx_cirurgico']) + '\n' +
+                  enxugar(fontes['pdf_relatorio']) + '\n' +
+                  enxugar(fontes['atividades_zendesk']) + '\n})();';
+
+    /* Trava de sintaxe: new Function() analisa o codigo sem executar. Se algum
+       .js tiver erro, o favorito NAO e liberado - melhor descobrir aqui do que
+       clicando no favorito e nao acontecendo nada. */
+    try {
+      new Function(codigoZ);
+    } catch (erroSintaxe) {
+      bmZ.classList.add('off');
+      elStatus.innerHTML = '<span class="ruim">Erro de sintaxe no JavaScript — ' +
+        'o favorito não foi gerado.<br>' + escapar(erroSintaxe.message) + '</span>';
+      return;
+    }
+
+    bmZ.href = 'javascript:' + encodeURIComponent(codigoZ);
+    bmZ.classList.remove('off');
+    bmZ.onclick = function (e) { e.preventDefault(); };
+
+    adicionarCopiar(bmZ, 'Zendesk');
+
+    if (!deCache) { guardarFontes(); }
+    elStatus.innerHTML = '<span class="ok">' + esperados().length + ' arquivos ' +
+      (deCache ? 'recuperados automaticamente' : 'carregados') +
+      '. Favorito do Zendesk: ' + Math.round(bmZ.href.length / 1024) + ' KB.</span>' +
+      (deCache ? '<br><span class="sub">Se você editou os .js, selecione-os de novo acima.</span>'
+               : '');
+
+    /* Torna o modulo de Excel utilizavel aqui, para o diagnostico. */
+    try {
+      XLSXmod = (new Function(fontes['xlsx_cirurgico'] + '; return XLSX;'))();
+      elPlanilha.disabled = false;
+      elSaida.textContent = 'Pronto. Escolha o arquivo .xlsx acima para rodar o diagnostico.';
+    } catch (e) {
+      elSaida.innerHTML = '<span class="ruim">Nao foi possivel carregar o motor de Excel: ' +
+        e.message + '</span>';
+    }
+  }
+
+  function adicionarCopiar(link, nome) {
+    if (link.nextSibling && link.nextSibling.dataset &&
+        link.nextSibling.dataset.copiar === nome) { return; }
+    var b = document.createElement('button');
+    b.textContent = 'Copiar endereço';
+    b.dataset.copiar = nome;
+    b.style.background = 'transparent';
+    b.style.color = 'var(--acento)';
+    b.style.border = '1px solid var(--borda)';
+    b.onclick = function () {
+      navigator.clipboard.writeText(link.href).then(function () {
+        b.textContent = 'Copiado';
+        setTimeout(function () { b.textContent = 'Copiar endereço'; }, 1600);
+      })['catch'](function () { b.textContent = 'Falhou'; });
+    };
+    link.parentNode.insertBefore(b, link.nextSibling);
+  }
+
+  /* =================================================== DIAGNOSTICO ====== */
+  /* O mapeamento e a informacao mais importante do diagnostico: fica FORA da
+     caixa com rolagem, para nao passar despercebido. */
+  var ROTULOS = {
+    data: 'Data', ticket: 'Nº do Ticket', problema: 'Problema/Solicitação',
+    feito: 'O Que Foi Feito', status: 'Status'
+  };
+
+  function mostrarResumo(escolhido, cols) {
+    var area = document.getElementById('resumo');
+    var faltando = CAMPOS.filter(function (c) { return !cols[c]; });
+    area.innerHTML = '';
+
+    var t = document.createElement('div');
+    t.style.cssText = 'margin:16px 0 8px;font-weight:600';
+    t.textContent = 'Colunas identificadas — aba "' + escolhido.aba +
+                    '", cabeçalho na linha ' + escolhido.m.linha;
+    area.appendChild(t);
+
+    var tab = document.createElement('table');
+    tab.innerHTML = '<tr><th>Campo da automação</th><th>Coluna</th>' +
+                    '<th>Cabeçalho na sua planilha</th></tr>';
+    area.appendChild(tab);
+    CAMPOS.forEach(function (c) {
+      var tr = document.createElement('tr');
+      var col = cols[c];
+      tr.innerHTML = '<td>' + ROTULOS[c] + '</td>' +
+        '<td>' + (col ? '<strong>' + XLSXmod.letraColuna(col) + '</strong>' :
+                        '<span class="ruim">—</span>') + '</td>' +
+        '<td>' + (col ? escapar(escolhido.m.textos[col])
+                      : '<span class="ruim">NÃO IDENTIFICADA</span>') + '</td>';
+      tab.appendChild(tr);
+    });
+
+    var veredito = document.createElement('p');
+    veredito.style.cssText = 'margin:12px 0 0;font-weight:600';
+    veredito.className = faltando.length ? 'ruim' : 'ok';
+    veredito.textContent = faltando.length
+      ? 'Confira antes de usar: ' + faltando.length + ' coluna(s) não identificada(s).'
+      : 'As 5 colunas foram identificadas. Confira se batem com a sua planilha.';
+    area.appendChild(veredito);
+
+    var b = document.createElement('button');
+    b.textContent = 'Copiar relatório completo';
+    b.style.cssText = 'margin-top:10px;background:transparent;color:var(--acento);' +
+                      'border:1px solid var(--borda)';
+    b.onclick = function () {
+      var texto = 'aba "' + escolhido.aba + '", cabecalho linha ' + escolhido.m.linha + '\n' +
+        CAMPOS.map(function (c) {
+          return ROTULOS[c] + ' -> ' + (cols[c] ? XLSXmod.letraColuna(cols[c]) + ' "' +
+            escolhido.m.textos[cols[c]] + '"' : 'NAO IDENTIFICADA');
+        }).join('\n') + '\n\n' + document.getElementById('saida').textContent;
+      /* Em paginas file:// o navigator.clipboard costuma nem existir, e o acesso
+         estoura antes de qualquer .catch. Por isso o try e o plano B. */
+      function planoB() {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = texto;
+          ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+          document.body.appendChild(ta);
+          ta.select();
+          var deu = document.execCommand('copy');
+          document.body.removeChild(ta);
+          b.textContent = deu ? 'Copiado — agora é só colar no chat'
+                              : 'Não consegui copiar — selecione o texto da caixa abaixo';
+        } catch (e) {
+          b.textContent = 'Não consegui copiar — selecione o texto da caixa abaixo';
+        }
+      }
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(texto).then(function () {
+            b.textContent = 'Copiado — agora é só colar no chat';
+          })['catch'](planoB);
+        } else { planoB(); }
+      } catch (e) { planoB(); }
+    };
+    area.appendChild(b);
+  }
+
+  /* O navegador consegue conferir que o arquivo gerado e valido, mas quem decide
+     de verdade e o Excel. Este botao permite abrir o resultado no Excel sem
+     nenhum risco: e um arquivo novo, baixado, separado da sua planilha. */
+  function oferecerDownload(bytes) {
+    var area = document.getElementById('baixar');
+    area.innerHTML = '';
+    var aviso = document.createElement('p');
+    aviso.innerHTML = '<strong>Última conferência:</strong> baixe o arquivo abaixo e abra no ' +
+      'Excel. Se ele abrir normalmente, com a formatação intacta e uma linha de teste ' +
+      '(ticket <code>9999999</code>) no final, está tudo certo. ' +
+      'Esse arquivo é uma cópia baixada — <strong>a sua planilha não foi alterada</strong>, ' +
+      'e você pode apagar o download depois.';
+    aviso.style.marginTop = '16px';
+    area.appendChild(aviso);
+
+    var b = document.createElement('button');
+    b.textContent = 'Baixar o arquivo de teste';
+    b.onclick = function () {
+      var url = URL.createObjectURL(new Blob([bytes], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      }));
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'TESTE_NAO_E_SUA_PLANILHA.xlsx';
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      b.textContent = 'Baixado — abra no Excel';
+    };
+    area.appendChild(b);
+  }
+
+  var linhas = [];
+  function p(txt, classe) {
+    linhas.push(classe ? '<span class="' + classe + '">' + escapar(txt) + '</span>'
+                       : escapar(txt));
+    elSaida.innerHTML = linhas.join('\n');
+    elSaida.scrollTop = elSaida.scrollHeight;
+  }
+  function escapar(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function titulo(t) { p(''); p('=== ' + t + ' ==='); }
+
+  var falhas = 0;
+  function checar(nome, ok, detalhe) {
+    if (!ok) { falhas++; }
+    p('  [' + (ok ? 'OK ' : '!! ') + '] ' + nome + (detalhe ? '  — ' + detalhe : ''),
+      ok ? 'ok' : 'ruim');
+    return ok;
+  }
+
+  var APELIDOS = {
+    data: ['data', 'dia', 'data atendimento', 'data da atividade'],
+    ticket: ['n ticket', 'no ticket', 'no do ticket', 'numero do ticket', 'numero ticket',
+             'ticket', 'chamado', 'n chamado', 'no chamado', 'id do ticket'],
+    problema: ['problema solicitacao', 'problema ou solicitacao', 'problema', 'solicitacao',
+               'assunto', 'descricao', 'demanda'],
+    feito: ['o que foi feito', 'oque foi feito', 'que foi feito', 'o que foi realizado',
+            'atividade realizada', 'acao realizada', 'tratativa', 'acao'],
+    status: ['status andamento', 'status e andamento', 'status', 'andamento', 'situacao',
+             'status do ticket']
+  };
+  var CAMPOS = ['data', 'ticket', 'problema', 'feito', 'status'];
+
+  function normalizar(t) {
+    if (t === null || t === undefined) { return ''; }
+    var s = String(t).normalize('NFKD').replace(/[̀-ͯ]/g, '');
+    s = s.replace(/[°º]/g, 'o').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+    return s.replace(/\s+/g, ' ').trim();
+  }
+
+  function classificar(texto) {
+    var alvo = normalizar(texto), achados = [];
+    if (!alvo) { return achados; }
+    Object.keys(APELIDOS).forEach(function (campo) {
+      var melhor = 0;
+      APELIDOS[campo].forEach(function (ap) {
+        if (alvo === ap) { melhor = Math.max(melhor, 3); }
+        else if (ap.length >= 5 && new RegExp('(^| )' + ap + '( |$)').test(alvo)) {
+          melhor = Math.max(melhor, 1);
+        }
+      });
+      if (melhor) { achados.push({ campo: campo, pontos: melhor }); }
+    });
+    return achados;
+  }
+
+  function mapaDaAba(pasta) {
+    var melhor = null;
+    for (var linha = 1; linha <= 30; linha++) {
+      var cols = {}, textos = {};
+      for (var col = 1; col <= 40; col++) {
+        var v = pasta.ler(linha, col);
+        if (v === null || String(v).trim() === '') { continue; }
+        textos[col] = String(v).trim();
+        classificar(v).forEach(function (a) {
+          if (!cols[a.campo] || a.pontos > cols[a.campo].pontos) {
+            cols[a.campo] = { col: col, pontos: a.pontos };
+          }
+        });
+      }
+      var achou = Object.keys(cols).length;
+      var pts = Object.keys(cols).reduce(function (s, k) { return s + cols[k].pontos; }, 0);
+      if (!melhor || achou > melhor.achou || (achou === melhor.achou && pts > melhor.pts)) {
+        melhor = { linha: linha, cols: cols, textos: textos, achou: achou, pts: pts };
+      }
+    }
+    return melhor;
+  }
+
+  function ultimaPreenchida(pasta, linhaCab, colunas) {
+    var rows = pasta.linhas(), limite = 0, i;
+    for (i = 0; i < rows.length; i++) {
+      var n = parseInt(rows[i].getAttribute('r'), 10);
+      if (n > limite) { limite = n; }
+    }
+    var maior = linhaCab;
+    for (var l = linhaCab + 1; l <= limite; l++) {
+      for (var k = 0; k < CAMPOS.length; k++) {
+        var v = pasta.ler(l, colunas[CAMPOS[k]]);
+        if (v !== null && String(v).trim() !== '') { maior = l; break; }
+      }
+    }
+    return maior;
+  }
+
+  elPlanilha.addEventListener('change', function () {
+    var f = (elPlanilha.files || [])[0];
+    if (!f || !XLSXmod) { return; }
+    linhas = []; falhas = 0;
+    elSaida.innerHTML = '';
+
+    p('Arquivo: ' + f.name + '  (' + (f.size / 1024).toFixed(1) + ' KB)');
+    p('Nada sera gravado em disco. Tudo acontece na memoria.');
+
+    f.arrayBuffer().then(function (buf) {
+      var original = new Uint8Array(buf.slice(0));
+      return XLSXmod.abrir(buf).then(function (pasta) {
+        titulo('ESTRUTURA');
+        p('  abas: ' + pasta.abas.map(function (a) {
+          return a.nome + (a.estado !== 'visible' ? ' (' + a.estado + ')' : '');
+        }).join(', '));
+        p('  partes internas: ' + pasta.entradas.length);
+
+        var riscos = pasta.entradas.filter(function (e) {
+          return /^xl\/(charts|media|drawings)\//.test(e.nome) || /vbaProject\.bin$/.test(e.nome);
+        });
+        if (riscos.length) {
+          p('  graficos/imagens/macros encontrados: ' + riscos.length, 'aviso');
+          p('  -> Estes elementos sao copiados byte a byte e NAO se perdem.', 'ok');
+        } else {
+          p('  sem graficos, imagens ou macros.');
+        }
+
+        /* Escolhe a melhor aba */
+        var visiveis = pasta.abas.filter(function (a) { return a.estado === 'visible'; });
+        if (!visiveis.length) { visiveis = pasta.abas; }
+        var escolhido = null;
+
+        return visiveis.reduce(function (prev, aba) {
+          return prev.then(function () {
+            return pasta.abrirAba(aba.nome).then(function () {
+              var m = mapaDaAba(pasta);
+              if (m && (!escolhido || m.achou > escolhido.m.achou)) {
+                escolhido = { aba: aba.nome, m: m };
+              }
+            });
+          });
+        }, Promise.resolve()).then(function () {
+          titulo('MAPEAMENTO DAS COLUNAS');
+          if (!escolhido) { checar('cabecalho localizado', false); return null; }
+
+          var cols = {};
+          Object.keys(escolhido.m.cols).forEach(function (k) {
+            cols[k] = escolhido.m.cols[k].col;
+          });
+          var faltando = CAMPOS.filter(function (c) { return !cols[c]; });
+
+          p('  aba: "' + escolhido.aba + '"   linha do cabecalho: ' + escolhido.m.linha);
+          p('');
+          var tabela = CAMPOS.map(function (c) {
+            return '    ' + (c + '         ').slice(0, 10) + ' -> ' +
+              (cols[c] ? ('coluna ' + (XLSXmod.letraColuna(cols[c]) + '  ').slice(0, 3) +
+                '  "' + escolhido.m.textos[cols[c]] + '"') : 'NAO IDENTIFICADA');
+          });
+          tabela.forEach(function (l) { p(l, l.indexOf('NAO') > 0 ? 'ruim' : null); });
+          mostrarResumo(escolhido, cols);
+
+          if (!checar('as 5 colunas foram identificadas', faltando.length === 0,
+                      faltando.length ? 'faltou: ' + faltando.join(', ') : '')) {
+            p('');
+            p('  Cabecalhos lidos na linha ' + escolhido.m.linha + ':', 'aviso');
+            Object.keys(escolhido.m.textos).forEach(function (c) {
+              p('    ' + XLSXmod.letraColuna(parseInt(c, 10)) + ': ' + escolhido.m.textos[c]);
+            });
+            p('');
+            p('  A automacao NAO vai gravar nada assim. Me mande esta lista que eu ajusto.',
+              'aviso');
+            return null;
+          }
+
+          return pasta.abrirAba(escolhido.aba).then(function () {
+            var ultima = ultimaPreenchida(pasta, escolhido.m.linha, cols);
+            titulo('DADOS ATUAIS');
+            p('  ultima linha preenchida: ' + ultima +
+              '   (linhas de dados: ' + (ultima - escolhido.m.linha) + ')');
+            p('  proxima gravacao iria para a linha ' + (ultima + 1));
+
+            for (var l = escolhido.m.linha + 1; l <= Math.min(ultima, escolhido.m.linha + 5); l++) {
+              p('    ' + l + ': [' + String(pasta.ler(l, cols.ticket) || '').slice(0, 10) + '] ' +
+                String(pasta.ler(l, cols.problema) || '').slice(0, 34));
+            }
+
+            /* ---------------- teste de escrita, em memoria ---------------- */
+            titulo('TESTE DE GRAVACAO (somente na memoria)');
+            var nova = ultima + 1;
+            var maxCol = Math.max.apply(null, CAMPOS.map(function (c) { return cols[c]; }));
+            if (ultima > escolhido.m.linha) {
+              var todas = [];
+              for (var i = 1; i <= maxCol; i++) { todas.push(i); }
+              pasta.copiarEstiloDaLinha(ultima, nova, todas);
+            }
+            var hoje = new Date();
+            pasta.escreverNumero(nova, cols.data, pasta.serialData(hoje));
+            pasta.escreverNumero(nova, cols.ticket, 9999999);
+            pasta.escreverTexto(nova, cols.problema, 'TESTE - pode ignorar');
+            pasta.escreverTexto(nova, cols.feito, 'Linha de teste\nSegunda linha');
+            pasta.escreverTexto(nova, cols.status, 'Aberto');
+            pasta.ajustarDimensao(nova, maxCol);
+
+            return XLSXmod.gerarBytes(pasta).then(function (bytes) {
+              checar('arquivo gerado', bytes && bytes.length > 0,
+                     (bytes.length / 1024).toFixed(1) + ' KB');
+              checar('tamanho coerente com o original',
+                     bytes.length > original.length * 0.5,
+                     'original ' + (original.length / 1024).toFixed(1) + ' KB');
+
+              return XLSXmod.abrir(bytes.buffer.slice(0)).then(function (p2) {
+                checar('arquivo gerado reabre sem erro', true);
+                checar('todas as partes internas preservadas',
+                       p2.entradas.length === pasta.entradas.length,
+                       p2.entradas.length + ' de ' + pasta.entradas.length);
+
+                return p2.abrirAba(escolhido.aba).then(function () {
+                  checar('cabecalho intacto',
+                         String(p2.ler(escolhido.m.linha, cols.feito) || '').trim() !== '');
+                  checar('linha de teste gravada',
+                         String(p2.ler(nova, cols.ticket)) === '9999999',
+                         'lido: ' + p2.ler(nova, cols.ticket));
+                  checar('texto com quebra de linha preservado',
+                         String(p2.ler(nova, cols.feito) || '').indexOf('\n') > 0);
+                  checar('data gravada como numero de data',
+                         typeof p2.ler(nova, cols.data) === 'number');
+                  var estilo = p2.acharCelula(nova, cols.data);
+                  var semAnterior = (ultima === escolhido.m.linha);
+                  checar('formatacao herdada da linha anterior',
+                         semAnterior || (estilo && estilo.getAttribute('s') !== null),
+                         semAnterior ? 'planilha vazia: nao havia linha para copiar'
+                                     : 'estilo ' + (estilo && estilo.getAttribute('s')));
+
+                  /* linhas antigas nao podem ter mudado */
+                  var igual = true;
+                  for (var l2 = escolhido.m.linha + 1; l2 <= ultima; l2++) {
+                    if (String(p2.ler(l2, cols.ticket)) !== String(pasta.ler(l2, cols.ticket))) {
+                      igual = false; break;
+                    }
+                  }
+                  checar('linhas existentes nao foram alteradas', igual);
+
+                  titulo('RESULTADO');
+                  if (falhas === 0) {
+                    p('  Tudo passou na conferencia do navegador.', 'ok');
+                  } else {
+                    p('  ' + falhas + ' verificacao(oes) falharam. Me mande esta tela.', 'ruim');
+                  }
+                  p('');
+                  p('  Lembrete: nada disso foi salvo. Seu arquivo continua igual.');
+                  oferecerDownload(bytes);
+                });
+              });
+            });
+          });
+        });
+      });
+    })['catch'](function (e) {
+      p('');
+      p('ERRO: ' + (e && e.message ? e.message : e), 'ruim');
+      p('Me mande esta mensagem que eu corrijo.', 'aviso');
+    });
+  });
+
+  restaurarFontes();
+})();
+</script>
+</body>
+</html>
